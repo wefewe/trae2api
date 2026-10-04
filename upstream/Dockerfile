@@ -12,11 +12,10 @@ RUN apk add --no-cache wget ca-certificates tzdata \
  && adduser -D -u 10001 app \
  && mkdir -p /app/auths /app/data \
  && chown -R app:app /app
+USER app
 WORKDIR /app
 COPY --from=build /out/trae2api /app/trae2api
 COPY config.example.json /app/config.json
-RUN chown -R app:app /app
-USER app
 EXPOSE 7864
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s \
   CMD wget -qO- http://127.0.0.1:7864/healthz || exit 1
